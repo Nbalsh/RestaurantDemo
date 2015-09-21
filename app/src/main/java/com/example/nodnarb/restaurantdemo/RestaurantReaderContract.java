@@ -5,10 +5,10 @@ import android.provider.BaseColumns;
 /**
  * Created by Nodnarb on 2015-09-20.
  */
-public final class FeedReaderContract {
+public final class RestaurantReaderContract {
     // To prevent someone from accidentally instantiating the contract class,
     // give it an empty constructor.
-    public FeedReaderContract() {}
+    public RestaurantReaderContract() {}
 
     /* Inner class that defines the table contents */
     public static abstract class RestaurantEntry implements BaseColumns {

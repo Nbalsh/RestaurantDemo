@@ -5,7 +5,6 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -20,7 +19,6 @@ public class MainActivty extends AppCompatActivity {
         setContentView(R.layout.activity_main_activty);
         mDbHelper = new RestaurantReaderDbHelper(getApplicationContext());
 
-
         // Gets the data repository in write mode
         SQLiteDatabase db = mDbHelper.getWritableDatabase();
 
@@ -28,26 +26,30 @@ public class MainActivty extends AppCompatActivity {
         // ID'S
 
         int id = 1;
-        String title = "Bob's burgers";
+        String title = "Bob's Burgers";
         String location = "1414 Alberta St";
+        String anotherTitle = "Jeb's Pizzas";
+        String anotherLocation = "3535 Montreabola St";
 
         // END ID'S
 
     // Create a new map of values, where column names are the keys
         ContentValues values = new ContentValues();
-        values.put(FeedReaderContract.RestaurantEntry.COLUMN_NAME_ENTRY_ID, id);
-        values.put(FeedReaderContract.RestaurantEntry.COLUMN_NAME_TITLE, title);
-        values.put(FeedReaderContract.RestaurantEntry.COLUMN_NAME_LOCATION, location);
+        values.put(RestaurantReaderContract.RestaurantEntry.COLUMN_NAME_ENTRY_ID, id);
+        values.put(RestaurantReaderContract.RestaurantEntry.COLUMN_NAME_TITLE, title);
+        values.put(RestaurantReaderContract.RestaurantEntry.COLUMN_NAME_LOCATION, location);
+
+        id++;
+        values.put(RestaurantReaderContract.RestaurantEntry.COLUMN_NAME_ENTRY_ID, id);
+        values.put(RestaurantReaderContract.RestaurantEntry.COLUMN_NAME_TITLE, anotherTitle);
+        values.put(RestaurantReaderContract.RestaurantEntry.COLUMN_NAME_LOCATION, anotherLocation);
 
     // Insert the new row, returning the primary key value of the new row
         long newRowId;
         newRowId = db.insert(
-                FeedReaderContract.RestaurantEntry.TABLE_NAME,
+                RestaurantReaderContract.RestaurantEntry.TABLE_NAME,
                 null,
                 values);
-        
-        
-        
         
         // READ FROM DB
 
@@ -56,32 +58,24 @@ public class MainActivty extends AppCompatActivity {
 // Define a projection that specifies which columns from the database
 // you will actually use after this query.
         String[] projection = {
-                FeedReaderContract.RestaurantEntry._ID,
-                FeedReaderContract.RestaurantEntry.COLUMN_NAME_TITLE
+                RestaurantReaderContract.RestaurantEntry._ID,
+                RestaurantReaderContract.RestaurantEntry.COLUMN_NAME_TITLE
         };
 
 // How you want the results sorted in the resulting Cursor
         String sortOrder =
-                FeedReaderContract.RestaurantEntry.COLUMN_NAME_ENTRY_ID + " DESC";
+                RestaurantReaderContract.RestaurantEntry.COLUMN_NAME_ENTRY_ID + " DESC";
 
-        Cursor c = db.query(
-                FeedReaderContract.RestaurantEntry.TABLE_NAME,  // The table to query
-                projection,                               // The columns to return
-                null,                                // The columns for the WHERE clause
-                null,                            // The values for the WHERE clause
-                null,                                     // don't group the rows
-                null,                                     // don't filter by row groups
-                sortOrder                                 // The sort order
-        );
+        String selecet = "SELECT DISTINCT " + RestaurantReaderContract.RestaurantEntry.COLUMN_NAME_TITLE +
+                " FROM " + RestaurantReaderContract.RestaurantEntry.TABLE_NAME;
+        Cursor c = db.rawQuery(selecet, null);
 
-
-        Log.v(TAG, "Test " + c.getColumnIndex(FeedReaderContract.RestaurantEntry.COLUMN_NAME_TITLE));
-
-        if (c.moveToFirst()) {// data?
-            Log.v(TAG, c.getString(c.getColumnIndex(FeedReaderContract.RestaurantEntry.COLUMN_NAME_TITLE)));
-            Log.v(TAG, FeedReaderContract.RestaurantEntry.COLUMN_NAME_ENTRY_ID);
-           // Log.v(TAG, c.getInt(c.getColumnIndex(FeedReaderContract.RestaurantEntry.COLUMN_NAME_ENTRY_ID)));
-           // Log.v(TAG, c.getString(c.getColumnIndex(FeedReaderContract.RestaurantEntry.COLUMN_NAME_LOCATION)));
+        int columnIndex = c.getColumnIndex(RestaurantReaderContract.RestaurantEntry.COLUMN_NAME_TITLE);
+        String[] restaurantNames = new String[c.getCount()];
+        int j = 0;
+        for (c.moveToFirst(); j < c.getCount(); c.moveToNext()){
+            restaurantNames[j] = c.getString(columnIndex);
+            j++;
         }
         c.close();
     }

@@ -12,7 +12,7 @@ public class RestaurantReaderDbHelper extends SQLiteOpenHelper {
     // If you change the database schema, you must increment the database version.
     public static final int DATABASE_VERSION = 1;
     public static final String DATABASE_NAME = "RestaurantReader.db";
-    FeedReaderContract readerContract = new FeedReaderContract();
+    RestaurantReaderContract readerContract = new RestaurantReaderContract();
 
     public RestaurantReaderDbHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);

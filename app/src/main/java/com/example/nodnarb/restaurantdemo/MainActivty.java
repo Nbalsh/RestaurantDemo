@@ -1,22 +1,37 @@
 package com.example.nodnarb.restaurantdemo;
 
+import android.app.ListActivity;
+import android.app.LoaderManager;
 import android.content.ContentValues;
+import android.content.Loader;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
+import android.support.v4.widget.SimpleCursorAdapter;
+import android.view.Gravity;
+import android.widget.FrameLayout;
+import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 
-public class MainActivty extends AppCompatActivity {
+public class MainActivty extends ListActivity
+        implements LoaderManager.LoaderCallbacks<Cursor> {
+
     RestaurantReaderDbHelper mDbHelper;
-
     private static final String TAG = "MyActivity";
+    // This is the Adapter being used to display the list's data
+    SimpleCursorAdapter mAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main_activty);
+        // Create a progress bar to display while the list loads
+        ProgressBar progressBar = new ProgressBar(this);
+        progressBar.setLayoutParams(new FrameLayout.LayoutParams(FrameLayout.LayoutParams.WRAP_CONTENT,
+                FrameLayout.LayoutParams.WRAP_CONTENT, Gravity.CENTER));
+        progressBar.setIndeterminate(true);
+        getListView().setEmptyView(progressBar);
+
+//        setContentView(R.layout.activity_main_activty);
         mDbHelper = new RestaurantReaderDbHelper(getApplicationContext());
 
         // Gets the data repository in write mode
@@ -100,5 +115,20 @@ public class MainActivty extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public Loader<Cursor> onCreateLoader(int id, Bundle args) {
+        return null;
+    }
+
+    @Override
+    public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+
+    }
+
+    @Override
+    public void onLoaderReset(Loader<Cursor> loader) {
+
     }
 }

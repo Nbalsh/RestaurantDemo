@@ -63,28 +63,32 @@ public class MainActivty extends Activity {
         // Gets the data repository in write mode
         SQLiteDatabase db = mDbHelper.getWritableDatabase();
 
+        db.delete(RestaurantReaderContract.RestaurantEntry.TABLE_NAME, null, null);
 
         // ID'S
         int id = 1;
         String title = "Bob's Burgers";
         String location = "1414 Alberta St";
+        int anotherId = id++;
         String anotherTitle = "Jeb's Pizzas";
         String anotherLocation = "3535 Montreabola St";
 
         // END ID'S
 
-        // Create a new map of values, where column names are the keys
-        ContentValues values = new ContentValues();
-        values = PutValues(id, title, location, values);
-        id++;
-        values = PutValues(id, anotherTitle, anotherLocation, values);
+        // Create a new map of value, where column names are the keys
+
+        ContentValues value = PutValues(id, title, location);
+        ContentValues anotherValue = PutValues(anotherId, anotherTitle, anotherLocation);
 
         // Insert the new row, returning the primary key value of the new row
-        long newRowId;
-        newRowId = db.insert(
+        db.insert(
                 RestaurantReaderContract.RestaurantEntry.TABLE_NAME,
                 null,
-                values);
+                value);
+        db.insert(
+                RestaurantReaderContract.RestaurantEntry.TABLE_NAME,
+                null,
+                anotherValue);
 
         // READ FROM DB
 
@@ -118,8 +122,9 @@ public class MainActivty extends Activity {
         return restaurantNames;
     }
 
-    private ContentValues PutValues(int id, String title, String location, ContentValues values)
+    private ContentValues PutValues(int id, String title, String location)
     {
+        ContentValues values = new ContentValues();
         values.put(RestaurantReaderContract.RestaurantEntry.COLUMN_NAME_ENTRY_ID, id);
         values.put(RestaurantReaderContract.RestaurantEntry.COLUMN_NAME_TITLE, title);
         values.put(RestaurantReaderContract.RestaurantEntry.COLUMN_NAME_LOCATION, location);
@@ -145,18 +150,18 @@ public class MainActivty extends Activity {
     {
         mainListView.setOnItemClickListener(new AdapterView.OnItemClickListener()
         {
-            public void onItemClick(AdapterView<?> parentAdapter, View view, int position,
-                                    long id)
+            public void onItemClick(AdapterView<?> parentAdapter, View view, final int position,
+                                    final long id)
             {
                 // We know the View is a TextView so we can cast it
-                TextView clickedView = (TextView) view;
+                final TextView clickedView = (TextView) view;
                 registerForContextMenu(mainListView);
                 new AlertDialog.Builder(MainActivty.this)
                         .setTitle("Delete entry")
                         .setMessage("Are you sure you want to delete this entry?")
                         .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
-                                // continue with delete
+                                Toast.makeText(MainActivty.this, "id:" + "[" + position + "]", Toast.LENGTH_SHORT).show();
                             }
                         })
                         .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {

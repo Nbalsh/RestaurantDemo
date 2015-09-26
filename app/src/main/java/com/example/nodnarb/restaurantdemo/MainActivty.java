@@ -5,6 +5,7 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.view.ContextMenu;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -13,6 +14,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 
 public class MainActivty extends Activity {
 
@@ -26,12 +28,11 @@ public class MainActivty extends Activity {
   {
       super.onCreate(savedInstanceState);
       setContentView(R.layout.activity_main_activty);
-
       InsertData();
 
     // Set the ArrayAdapter as the ListView's adapter.
       mainListView.setAdapter(listAdapter);
- 
+
     // React to user clicks on item
       SetOnClickListener();
   }
@@ -60,7 +61,6 @@ public class MainActivty extends Activity {
 
 
         // ID'S
-
         int id = 1;
         String title = "Bob's Burgers";
         String location = "1414 Alberta St";
@@ -122,7 +122,20 @@ public class MainActivty extends Activity {
         return values;
     }
 
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View v,
+                                    ContextMenu.ContextMenuInfo menuInfo) {
 
+        super.onCreateContextMenu(menu, v, menuInfo);
+        AdapterView.AdapterContextMenuInfo aInfo = (AdapterView.AdapterContextMenuInfo) menuInfo;
+
+        // We know that each row in the adapter is a Map
+        String item =  listAdapter.getItem(aInfo.position);
+
+        menu.setHeaderTitle("Options for " + item);
+        menu.add(1, 1, 1, "Details");
+        menu.add(1, 2, 2, "Delete");
+    }
 
     private void SetOnClickListener()
     {
@@ -133,7 +146,7 @@ public class MainActivty extends Activity {
             {
                 // We know the View is a TextView so we can cast it
                 TextView clickedView = (TextView) view;
-
+                registerForContextMenu(mainListView);
                 Toast.makeText(MainActivty.this, "Item with id [" + id + "] - Position [" + position + "] - Restaurant [" + clickedView.getText() + "]", Toast.LENGTH_SHORT).show();
             }
         });

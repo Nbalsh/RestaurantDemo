@@ -1,30 +1,23 @@
 package com.example.nodnarb.restaurantdemo;
 
-import android.annotation.TargetApi;
 import android.app.Activity;
-import android.app.AlertDialog;
-import android.app.Dialog;
 import android.content.ContentValues;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
-import android.graphics.drawable.Drawable;
-import android.os.Build;
 import android.os.Bundle;
 import android.view.ContextMenu;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 
 public class MainActivty extends Activity {
 
@@ -49,9 +42,6 @@ public class MainActivty extends Activity {
               return (event.getAction() == MotionEvent.ACTION_MOVE);
           }
       });
-
-    // React to user clicks on item
-      SetOnClickListener();
   }
 
     private void InsertData()
@@ -168,44 +158,6 @@ public class MainActivty extends Activity {
         menu.setHeaderTitle("Options for " + item);
         menu.add(1, 1, 1, "Details");
         menu.add(1, 2, 2, "Delete");
-    }
-
-    private void SetOnClickListener()
-    {
-        mainListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            public void onItemClick(AdapterView<?> parentAdapter, View view, final int position,
-                                    final long id) {
-                final SQLiteDatabase db = mDbHelper.getWritableDatabase();
-
-                // We know the View is a TextView so we can cast it
-                final TextView clickedView = (TextView) view;
-
-                final Drawable background = clickedView.getBackground();
-                clickedView.setBackgroundColor(Color.parseColor("#aa66cc"));
-
-                registerForContextMenu(mainListView);
-//                Toast.makeText(MainActivty.this, "Item with id [" + id + "] - Position [" + position + "] - Restaurant [" + clickedView.getText() + "]", Toast.LENGTH_SHORT).show();
-                new AlertDialog.Builder(MainActivty.this)
-                        .setTitle("Pass On Restaurant?")
-                        .setMessage("Pass on " + clickedView.getText() + "?")
-                        .setNegativeButton("Pass", new DialogInterface.OnClickListener() {
-                            @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
-                            public void onClick(DialogInterface dialog, int which) {
-                                RemoveRestaurntWithId(which);
-                                listAdapter.notifyDataSetChanged();
-                                clickedView.setBackground(background);
-                            }
-
-                            private void RemoveRestaurntWithId(int which) {
-                                db.delete(RestaurantReaderContract.RestaurantEntry.TABLE_NAME, RestaurantReaderContract.RestaurantEntry._ID + "=" + which, null);
-                                Toast.makeText(MainActivty.this, "Passed :(", Toast.LENGTH_SHORT).show();
-                                listAdapter.remove(listAdapter.getItem(position));
-                            }
-                        })
-                        .setIcon(android.R.drawable.ic_dialog_alert)
-                        .show();
-            }
-        });
     }
 
     public void startFinalSelectionActivity(View view){

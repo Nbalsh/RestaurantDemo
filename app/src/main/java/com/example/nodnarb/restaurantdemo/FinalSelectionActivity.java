@@ -50,9 +50,12 @@ public class FinalSelectionActivity extends AppCompatActivity {
         mDbHelper = new RestaurantReaderDbHelper(getApplicationContext());
 
         SQLiteDatabase db = mDbHelper.getWritableDatabase();
-
-        db.delete(RestaurantReaderContract.RestaurantEntry.TABLE_NAME_SELECTED, null, null);
-
+        /*String selectForDelete = "select * from " + RestaurantReaderContract.RestaurantEntry.TABLE_NAME_SELECTED;
+        Cursor cursorForDelete = db.rawQuery(selectForDelete, null);
+        if(cursorForDelete.getCount() > 0) {
+            db.delete(RestaurantReaderContract.RestaurantEntry.TABLE_NAME_SELECTED, null, null);
+        }
+*/
         // ID'S
         int id = 1;
         String title = "Jeb's Pizzas";
@@ -60,7 +63,7 @@ public class FinalSelectionActivity extends AppCompatActivity {
         int anotherId = id++;
         String anotherTitle = "Bob's Burgers";
         String anotherLocation = "1414 Alberta St";
-        int anotherId2 = id++;
+        int anotherId2 = anotherId++;
         String anotherTitle2 = "Susan's Sushi";
         String anotherLocation2 = "123 Sesame St";
 
@@ -85,7 +88,6 @@ public class FinalSelectionActivity extends AppCompatActivity {
                 RestaurantReaderContract.RestaurantEntry.TABLE_NAME_SELECTED,
                 null,
                 anotherValue2);
-
 
         // READ FROM DB
         SQLiteDatabase dbReader = mDbHelper.getReadableDatabase();

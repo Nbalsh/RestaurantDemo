@@ -151,4 +151,17 @@ public class FinalSelectionActivity extends AppCompatActivity {
         values.put(RestaurantReaderContract.RestaurantEntry.COLUMN_NAME_LOCATION, location);
         return values;
     }
+
+    @Override
+    protected void onStop(){
+        super.onStop();
+        deleteAllFromDB();
+    }
+
+    private void deleteAllFromDB(){
+        mDbHelper = new RestaurantReaderDbHelper(getApplicationContext());
+        SQLiteDatabase db = mDbHelper.getWritableDatabase();
+        db.delete(RestaurantReaderContract.RestaurantEntry.TABLE_NAME_SELECTED, null, null);
+    }
+
 }

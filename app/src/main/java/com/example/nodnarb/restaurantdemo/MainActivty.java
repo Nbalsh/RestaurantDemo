@@ -228,4 +228,26 @@ public class MainActivty extends Activity {
         Intent intent = new Intent(this, FinalSelectionActivity.class);
         startActivity(intent);
     }
+
+    public void likeButton(View view){
+        if(listAdapter.getCount() > 0) {
+
+            TextView item = (TextView) mainListView.getChildAt(mainListView.getFirstVisiblePosition());
+
+            SQLiteDatabase db = mDbHelper.getWritableDatabase();
+
+            ContentValues value = PutValues(mainListView.getFirstVisiblePosition(), item.getText().toString(), "aLocation");
+            db.insert(RestaurantReaderContract.RestaurantEntry.TABLE_NAME_SELECTED, null, value);
+            RemoveRestaurntWithId(0);
+            listAdapter.notifyDataSetChanged();
+            //clickedView.setBackground(background);
+        }
+    }
+
+    private void RemoveRestaurntWithId(int which) {
+        SQLiteDatabase db = mDbHelper.getWritableDatabase();
+        db.delete(RestaurantReaderContract.RestaurantEntry.TABLE_NAME, RestaurantReaderContract.RestaurantEntry._ID + "=" + which, null);
+        Toast.makeText(MainActivty.this, "Liked!", Toast.LENGTH_SHORT).show();
+        listAdapter.remove(listAdapter.getItem(0));
+    }
 }

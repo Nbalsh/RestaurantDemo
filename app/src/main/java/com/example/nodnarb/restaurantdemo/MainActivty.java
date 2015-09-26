@@ -149,17 +149,16 @@ public class MainActivty extends Activity {
 
     private void SetOnClickListener()
     {
-        mainListView.setOnItemClickListener(new AdapterView.OnItemClickListener()
-        {
+        mainListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parentAdapter, View view, final int position,
-                                    final long id)
-            {
+                                    final long id) {
                 // We know the View is a TextView so we can cast it
                 final TextView clickedView = (TextView) view;
                 registerForContextMenu(mainListView);
+//                Toast.makeText(MainActivty.this, "Item with id [" + id + "] - Position [" + position + "] - Restaurant [" + clickedView.getText() + "]", Toast.LENGTH_SHORT).show();
                 new AlertDialog.Builder(MainActivty.this)
-                        .setTitle("Delete entry")
-                        .setMessage("Are you sure you want to delete this entry?")
+                        .setTitle("Likey Like")
+                        .setMessage("Add " + clickedView.getText() + " to your liked restaurants?")
                         .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
                                 Toast.makeText(MainActivty.this, "id:" + "[" + position + "]", Toast.LENGTH_SHORT).show();

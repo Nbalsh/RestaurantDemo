@@ -90,7 +90,7 @@ public class MainActivty extends Activity {
                 RestaurantReaderContract.RestaurantEntry.TABLE_NAME,
                 null,
                 anotherValue);
-
+        
         String loopTitle = "";
         String loopLocation = "";
         for(int i = id; i < 20; i++){

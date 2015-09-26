@@ -41,7 +41,7 @@ public class FinalSelectionActivity extends AppCompatActivity {
         restaurantNames.addAll(Arrays.asList(restaurants));
 
         // Create ArrayAdapter using the planet list.
-        listAdapter = new ArrayAdapter<String>(this, R.layout.simplerow, restaurantNames);
+        listAdapter = new ArrayAdapter<String>(this, R.layout.simplerowfinalselection, restaurantNames);
     }
 
 

@@ -17,6 +17,7 @@
             android:layout_width="wrap_content"
             android:text="@string/done_button"
             android:layout_alignParentBottom="true"
+            android:textAllCaps="false"
             android:onClick="startFinalSelectionActivity"
             />
 </RelativeLayout>

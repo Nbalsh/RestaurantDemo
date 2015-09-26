@@ -4,5 +4,5 @@
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
     <string name="title_activity_final_selection">FinalSelectionActivity</string>
-    <string name="done_button">Done</string>
+    <string name="done_button">View liked Restaurants!</string>
 </resources>

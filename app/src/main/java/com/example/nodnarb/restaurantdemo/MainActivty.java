@@ -183,7 +183,6 @@ public class MainActivty extends Activity {
     private void RemoveRestaurntWithId(int which) {
         SQLiteDatabase db = mDbHelper.getWritableDatabase();
         db.delete(RestaurantReaderContract.RestaurantEntry.TABLE_NAME, RestaurantReaderContract.RestaurantEntry._ID + "=" + which, null);
-        Toast.makeText(MainActivty.this, "Liked!", Toast.LENGTH_SHORT).show();
         listAdapter.remove(listAdapter.getItem(0));
     }
 }

@@ -1,71 +1,48 @@
 package com.example.nodnarb.restaurantdemo;
 
-import android.app.ListActivity;
-import android.app.LoaderManager;
+import java.util.ArrayList;
+import java.util.Arrays;
+
+import android.app.Activity;
 import android.content.ContentValues;
-import android.content.CursorLoader;
-import android.content.Loader;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
-import android.provider.ContactsContract;
-import android.support.v4.widget.SimpleCursorAdapter;
-import android.view.Gravity;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.FrameLayout;
+import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.ProgressBar;
+import android.widget.SimpleCursorAdapter;
 
-public class MainActivty extends ListActivity
-        implements LoaderManager.LoaderCallbacks<Cursor> {
+public class MainActivty extends Activity {
 
-    // Define a projection that specifies which columns from the database
-// you will actually use after this query.
-    static final String[] projection = {
-            RestaurantReaderContract.RestaurantEntry._ID,
-            RestaurantReaderContract.RestaurantEntry.COLUMN_NAME_TITLE
-    };
-
-    static final String SELECTION = "SELECT DISTINCT " + RestaurantReaderContract.RestaurantEntry.COLUMN_NAME_TITLE +
-            " FROM " + RestaurantReaderContract.RestaurantEntry.TABLE_NAME;
-
+  private ListView mainListView ;
+  private ArrayAdapter<String> listAdapter ;
     RestaurantReaderDbHelper mDbHelper;
-    private static final String TAG = "MyActivity";
-    // This is the Adapter being used to display the list's data
-    SimpleCursorAdapter mAdapter;
+  /** Called when the activity is first created. */
+  @Override
+  public void onCreate(Bundle savedInstanceState) {
+      super.onCreate(savedInstanceState);
+      setContentView(R.layout.activity_main_activty);
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        // Create a progress bar to display while the list loads
-        ProgressBar progressBar = new ProgressBar(this);
-        progressBar.setLayoutParams(new FrameLayout.LayoutParams(FrameLayout.LayoutParams.WRAP_CONTENT,
-                FrameLayout.LayoutParams.WRAP_CONTENT, Gravity.CENTER));
-        progressBar.setIndeterminate(true);
-        getListView().setEmptyView(progressBar);
+      InsertData();
 
-        // Must add the progress bar to the root of the layout
-        ViewGroup root = (ViewGroup) findViewById(android.R.id.content);
-        root.addView(progressBar);
+// Set the ArrayAdapter as the ListView's adapter.
+    mainListView.setAdapter( listAdapter );
+  }
 
-        // For the cursor adapter, specify which columns go into which views
-        String[] fromColumns = {RestaurantReaderContract.RestaurantEntry.COLUMN_NAME_TITLE};
-        int[] toViews = {android.R.id.text1}; // The TextView in simple_list_item_1
+    private void InsertData() {
+        // Find the ListView resource.
+        mainListView = (ListView) findViewById( R.id.mainListView );
 
-        // Create an empty adapter we will use to display the loaded data.
-        // We pass null for the cursor, then update it in onLoadFinished()
-        mAdapter = new SimpleCursorAdapter(this,
-                android.R.layout.simple_list_item_1, null,
-                fromColumns, toViews, 0);
-        setListAdapter(mAdapter);
+        String[] restaurants = GetDataFromDB();
+        
+        ArrayList<String>restaurantNames = new ArrayList<String>();
+        restaurantNames.addAll(Arrays.asList(restaurants));
 
-        // Prepare the loader.  Either re-connect with an existing one,
-        // or start a new one.
-        getLoaderManager().initLoader(0, null, this);
+        // Create ArrayAdapter using the planet list.
+        listAdapter = new ArrayAdapter<String>(this, R.layout.simplerow, restaurantNames);
+    }
 
+    private String[] GetDataFromDB() {
 //        setContentView(R.layout.activity_main_activty);
         mDbHelper = new RestaurantReaderDbHelper(getApplicationContext());
 
@@ -83,7 +60,7 @@ public class MainActivty extends ListActivity
 
         // END ID'S
 
-    // Create a new map of values, where column names are the keys
+        // Create a new map of values, where column names are the keys
         ContentValues values = new ContentValues();
         values.put(RestaurantReaderContract.RestaurantEntry.COLUMN_NAME_ENTRY_ID, id);
         values.put(RestaurantReaderContract.RestaurantEntry.COLUMN_NAME_TITLE, title);
@@ -94,7 +71,7 @@ public class MainActivty extends ListActivity
         values.put(RestaurantReaderContract.RestaurantEntry.COLUMN_NAME_TITLE, anotherTitle);
         values.put(RestaurantReaderContract.RestaurantEntry.COLUMN_NAME_LOCATION, anotherLocation);
 
-    // Insert the new row, returning the primary key value of the new row
+        // Insert the new row, returning the primary key value of the new row
         long newRowId;
         newRowId = db.insert(
                 RestaurantReaderContract.RestaurantEntry.TABLE_NAME,
@@ -105,13 +82,20 @@ public class MainActivty extends ListActivity
 
         SQLiteDatabase dbReader = mDbHelper.getReadableDatabase();
 
-
+// Define a projection that specifies which columns from the database
+// you will actually use after this query.
+        String[] projection = {
+                RestaurantReaderContract.RestaurantEntry._ID,
+                RestaurantReaderContract.RestaurantEntry.COLUMN_NAME_TITLE
+        };
 
 // How you want the results sorted in the resulting Cursor
         String sortOrder =
                 RestaurantReaderContract.RestaurantEntry.COLUMN_NAME_ENTRY_ID + " DESC";
 
-        Cursor c = db.rawQuery(SELECTION, null);
+        String selecet = "SELECT DISTINCT " + RestaurantReaderContract.RestaurantEntry.COLUMN_NAME_TITLE +
+                " FROM " + RestaurantReaderContract.RestaurantEntry.TABLE_NAME;
+        Cursor c = db.rawQuery(selecet, null);
 
         int columnIndex = c.getColumnIndex(RestaurantReaderContract.RestaurantEntry.COLUMN_NAME_TITLE);
         String[] restaurantNames = new String[c.getCount()];
@@ -121,55 +105,7 @@ public class MainActivty extends ListActivity
             j++;
         }
         c.close();
-    }
-
-    // Called when a new Loader needs to be created
-    public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-        // Now create and return a CursorLoader that will take care of
-        // creating a Cursor for the data being displayed.
-        return new CursorLoader(this, ContactsContract.Data.CONTENT_URI,
-                projection, SELECTION, null, null);
-    }
-
-    // Called when a previously created loader has finished loading
-    public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
-        // Swap the new cursor in.  (The framework will take care of closing the
-        // old cursor once we return.)
-        mAdapter.swapCursor(data);
-    }
-
-    // Called when a previously created loader is reset, making the data unavailable
-    public void onLoaderReset(Loader<Cursor> loader) {
-        // This is called when the last Cursor provided to onLoadFinished()
-        // above is about to be closed.  We need to make sure we are no
-        // longer using it.
-        mAdapter.swapCursor(null);
-    }
-
-    @Override
-    public void onListItemClick(ListView l, View v, int position, long id) {
-        // Do something when a list item is clicked
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main_activty, menu);
-        return true;
+        
+        return restaurantNames;
     }
 }

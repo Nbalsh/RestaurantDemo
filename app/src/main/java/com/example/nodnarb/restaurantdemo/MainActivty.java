@@ -152,6 +152,8 @@ public class MainActivty extends Activity {
         mainListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parentAdapter, View view, final int position,
                                     final long id) {
+                final SQLiteDatabase db = mDbHelper.getWritableDatabase();
+
                 // We know the View is a TextView so we can cast it
                 final TextView clickedView = (TextView) view;
                 registerForContextMenu(mainListView);
@@ -161,6 +163,7 @@ public class MainActivty extends Activity {
                         .setMessage("Add " + clickedView.getText() + " to your liked restaurants?")
                         .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
+                                db.delete(RestaurantReaderContract.RestaurantEntry.TABLE_NAME, RestaurantReaderContract.RestaurantEntry._ID + "=" + which, null);
                                 Toast.makeText(MainActivty.this, "id:" + "[" + position + "]", Toast.LENGTH_SHORT).show();
                             }
                         })

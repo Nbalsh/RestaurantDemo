@@ -50,6 +50,7 @@ public class FinalSelectionActivity extends AppCompatActivity {
         mDbHelper = new RestaurantReaderDbHelper(getApplicationContext());
 
         SQLiteDatabase db = mDbHelper.getWritableDatabase();
+//        db.delete(RestaurantReaderContract.RestaurantEntry.TABLE_NAME_SELECTED, null, null);
         /*String selectForDelete = "select * from " + RestaurantReaderContract.RestaurantEntry.TABLE_NAME_SELECTED;
         Cursor cursorForDelete = db.rawQuery(selectForDelete, null);
         if(cursorForDelete.getCount() > 0) {
@@ -71,15 +72,15 @@ public class FinalSelectionActivity extends AppCompatActivity {
 
         // Create a new map of value, where column names are the keys
 
-        ContentValues value = PutValues(id, title, location);
+//        ContentValues value = PutValues(id, title, location);
         ContentValues anotherValue = PutValues(anotherId, anotherTitle, anotherLocation);
         ContentValues anotherValue2 = PutValues(anotherId2, anotherTitle2, anotherLocation2);
 
         // Insert the new row, returning the primary key value of the new row
-        db.insert(
-                RestaurantReaderContract.RestaurantEntry.TABLE_NAME_SELECTED,
-                null,
-                value);
+//        db.insert(
+//                RestaurantReaderContract.RestaurantEntry.TABLE_NAME_SELECTED,
+//                null,
+//                value);
         db.insert(
                 RestaurantReaderContract.RestaurantEntry.TABLE_NAME_SELECTED,
                 null,

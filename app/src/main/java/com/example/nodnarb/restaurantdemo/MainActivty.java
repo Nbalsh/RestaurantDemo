@@ -91,6 +91,17 @@ public class MainActivty extends Activity {
                 null,
                 anotherValue);
 
+        String loopTitle = "";
+        String loopLocation = "";
+        for(int i = id; i < 20; i++){
+            loopTitle = loopTitle + "a" + i;
+            loopLocation = loopLocation + "b" + i;
+            ContentValues contVal = PutValues(i, loopTitle, loopLocation);
+            db.insert(
+                    RestaurantReaderContract.RestaurantEntry.TABLE_NAME,
+                    null,
+                    contVal);
+        }
         // READ FROM DB
 
         SQLiteDatabase dbReader = mDbHelper.getReadableDatabase();
@@ -163,10 +174,16 @@ public class MainActivty extends Activity {
                         .setMessage("Add " + clickedView.getText() + " to your liked restaurants?")
                         .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
+                                ContentValues value = PutValues(which, clickedView.getText().toString(), "aLocation");
+                                db.insert(RestaurantReaderContract.RestaurantEntry.TABLE_NAME_SELECTED, null, value);
+                                RemoveRestaurntWithId(which);
+                                listAdapter.notifyDataSetChanged();
+                            }
+
+                            private void RemoveRestaurntWithId(int which) {
                                 db.delete(RestaurantReaderContract.RestaurantEntry.TABLE_NAME, RestaurantReaderContract.RestaurantEntry._ID + "=" + which, null);
                                 Toast.makeText(MainActivty.this, "Liked!", Toast.LENGTH_SHORT).show();
                                 listAdapter.remove(listAdapter.getItem(position));
-                                listAdapter.notifyDataSetChanged();
                             }
                         })
                         .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {

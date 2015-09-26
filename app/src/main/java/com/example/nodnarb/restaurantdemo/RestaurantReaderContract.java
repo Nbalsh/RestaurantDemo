@@ -46,6 +46,9 @@ public final class RestaurantReaderContract {
     public String getSqlCreateEntries() {
         return SQL_CREATE_ENTRIES_MAIN;
     }
+    public String getSqlCreateEntriesAccepted() {
+        return SQL_CREATE_ENTRIES_ACCEPTED;
+    }
     public String getSqlDeleteEntries() {
         return SQL_DELETE_ENTRIES;
     }

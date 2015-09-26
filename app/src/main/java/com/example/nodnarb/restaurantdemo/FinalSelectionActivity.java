@@ -49,6 +49,36 @@ public class FinalSelectionActivity extends AppCompatActivity {
     {
         mDbHelper = new RestaurantReaderDbHelper(getApplicationContext());
 
+        SQLiteDatabase db = mDbHelper.getWritableDatabase();
+
+        db.delete(RestaurantReaderContract.RestaurantEntry.TABLE_NAME, null, null);
+
+        // ID'S
+        int id = 1;
+        String title = "Jeb's Pizzas";
+        String location = "3535 Montreabola St";
+        int anotherId = id++;
+        String anotherTitle = "Bob's Burgers";
+        String anotherLocation = "1414 Alberta St";
+
+        // END ID'S
+
+        // Create a new map of value, where column names are the keys
+
+        ContentValues value = PutValues(id, title, location);
+        ContentValues anotherValue = PutValues(anotherId, anotherTitle, anotherLocation);
+
+        // Insert the new row, returning the primary key value of the new row
+        db.insert(
+                RestaurantReaderContract.RestaurantEntry.TABLE_NAME,
+                null,
+                value);
+        db.insert(
+                RestaurantReaderContract.RestaurantEntry.TABLE_NAME,
+                null,
+                anotherValue);
+
+
         // READ FROM DB
         SQLiteDatabase dbReader = mDbHelper.getReadableDatabase();
 
@@ -108,5 +138,14 @@ public class FinalSelectionActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private ContentValues PutValues(int id, String title, String location)
+    {
+        ContentValues values = new ContentValues();
+        values.put(RestaurantReaderContract.RestaurantEntry.COLUMN_NAME_ENTRY_ID, id);
+        values.put(RestaurantReaderContract.RestaurantEntry.COLUMN_NAME_TITLE, title);
+        values.put(RestaurantReaderContract.RestaurantEntry.COLUMN_NAME_LOCATION, location);
+        return values;
     }
 }

@@ -13,6 +13,7 @@ public final class RestaurantReaderContract {
     /* Inner class that defines the table contents */
     public static abstract class RestaurantEntry implements BaseColumns {
         public static final String TABLE_NAME = "restaurant";
+        public static final String TABLE_NAME_SELECTED = "restaurantSelected";
         public static final String COLUMN_NAME_ENTRY_ID = "id";
         public static final String COLUMN_NAME_TITLE = "rName";
         public static final String COLUMN_NAME_LOCATION = "rLocation";
@@ -31,7 +32,7 @@ public final class RestaurantReaderContract {
             " )";
 
     private static final String SQL_CREATE_ENTRIES_ACCEPTED =
-            "CREATE TABLE " + RestaurantEntry.TABLE_NAME + " (" +
+            "CREATE TABLE " + RestaurantEntry.TABLE_NAME_SELECTED + " (" +
                     RestaurantEntry._ID + " INTEGER PRIMARY KEY," +
                     RestaurantEntry.COLUMN_NAME_ENTRY_ID + TEXT_TYPE + COMMA_SEP +
                     RestaurantEntry.COLUMN_NAME_TITLE + TEXT_TYPE + COMMA_SEP +

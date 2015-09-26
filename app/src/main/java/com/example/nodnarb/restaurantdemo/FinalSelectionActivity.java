@@ -51,7 +51,7 @@ public class FinalSelectionActivity extends AppCompatActivity {
 
         SQLiteDatabase db = mDbHelper.getWritableDatabase();
 
-        db.delete(RestaurantReaderContract.RestaurantEntry.TABLE_NAME, null, null);
+        db.delete(RestaurantReaderContract.RestaurantEntry.TABLE_NAME_SELECTED, null, null);
 
         // ID'S
         int id = 1;
@@ -60,6 +60,9 @@ public class FinalSelectionActivity extends AppCompatActivity {
         int anotherId = id++;
         String anotherTitle = "Bob's Burgers";
         String anotherLocation = "1414 Alberta St";
+        int anotherId2 = id++;
+        String anotherTitle2 = "Susan's Sushi";
+        String anotherLocation2 = "123 Sesame St";
 
         // END ID'S
 
@@ -67,16 +70,21 @@ public class FinalSelectionActivity extends AppCompatActivity {
 
         ContentValues value = PutValues(id, title, location);
         ContentValues anotherValue = PutValues(anotherId, anotherTitle, anotherLocation);
+        ContentValues anotherValue2 = PutValues(anotherId2, anotherTitle2, anotherLocation2);
 
         // Insert the new row, returning the primary key value of the new row
         db.insert(
-                RestaurantReaderContract.RestaurantEntry.TABLE_NAME,
+                RestaurantReaderContract.RestaurantEntry.TABLE_NAME_SELECTED,
                 null,
                 value);
         db.insert(
-                RestaurantReaderContract.RestaurantEntry.TABLE_NAME,
+                RestaurantReaderContract.RestaurantEntry.TABLE_NAME_SELECTED,
                 null,
                 anotherValue);
+        db.insert(
+                RestaurantReaderContract.RestaurantEntry.TABLE_NAME_SELECTED,
+                null,
+                anotherValue2);
 
 
         // READ FROM DB
@@ -94,7 +102,7 @@ public class FinalSelectionActivity extends AppCompatActivity {
                 RestaurantReaderContract.RestaurantEntry.COLUMN_NAME_ENTRY_ID + " DESC";
 
         String select = "SELECT DISTINCT " + RestaurantReaderContract.RestaurantEntry.COLUMN_NAME_TITLE +
-                " FROM " + RestaurantReaderContract.RestaurantEntry.TABLE_NAME;
+                " FROM " + RestaurantReaderContract.RestaurantEntry.TABLE_NAME_SELECTED;
         Cursor c = dbReader.rawQuery(select, null);
 
         int columnIndex = c.getColumnIndex(RestaurantReaderContract.RestaurantEntry.COLUMN_NAME_TITLE);

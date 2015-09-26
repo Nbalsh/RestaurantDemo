@@ -20,7 +20,7 @@ public final class RestaurantReaderContract {
 
     private static final String TEXT_TYPE = " TEXT";
     private static final String COMMA_SEP = ",";
-    private static final String SQL_CREATE_ENTRIES =
+    private static final String SQL_CREATE_ENTRIES_MAIN =
             "CREATE TABLE " + RestaurantEntry.TABLE_NAME + " (" +
                     RestaurantEntry._ID + " INTEGER PRIMARY KEY," +
                     RestaurantEntry.COLUMN_NAME_ENTRY_ID + TEXT_TYPE + COMMA_SEP +
@@ -30,11 +30,21 @@ public final class RestaurantReaderContract {
     // Any other options for the CREATE command
             " )";
 
+    private static final String SQL_CREATE_ENTRIES_ACCEPTED =
+            "CREATE TABLE " + RestaurantEntry.TABLE_NAME + " (" +
+                    RestaurantEntry._ID + " INTEGER PRIMARY KEY," +
+                    RestaurantEntry.COLUMN_NAME_ENTRY_ID + TEXT_TYPE + COMMA_SEP +
+                    RestaurantEntry.COLUMN_NAME_TITLE + TEXT_TYPE + COMMA_SEP +
+                    RestaurantEntry.COLUMN_NAME_LOCATION + TEXT_TYPE +
+                    // Any other options for the CREATE command
+                    " )";
+
+
     private static final String SQL_DELETE_ENTRIES =
             "DROP TABLE IF EXISTS " + RestaurantEntry.TABLE_NAME;
 
     public String getSqlCreateEntries() {
-        return SQL_CREATE_ENTRIES;
+        return SQL_CREATE_ENTRIES_MAIN;
     }
     public String getSqlDeleteEntries() {
         return SQL_DELETE_ENTRIES;

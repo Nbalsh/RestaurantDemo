@@ -10,6 +10,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.ContextMenu;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -37,6 +38,13 @@ public class MainActivty extends Activity {
 
     // Set the ArrayAdapter as the ListView's adapter.
       mainListView.setAdapter(listAdapter);
+
+      mainListView.setOnTouchListener(new View.OnTouchListener() {
+
+          public boolean onTouch(View v, MotionEvent event) {
+              return (event.getAction() == MotionEvent.ACTION_MOVE);
+          }
+      });
 
     // React to user clicks on item
       SetOnClickListener();
@@ -90,7 +98,7 @@ public class MainActivty extends Activity {
                 RestaurantReaderContract.RestaurantEntry.TABLE_NAME,
                 null,
                 anotherValue);
-        
+
         String loopTitle = "";
         String loopLocation = "";
         for(int i = id; i < 20; i++){

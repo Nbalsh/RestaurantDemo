@@ -4,5 +4,6 @@
     android:layout_height="fill_parent"
     android:textSize="54sp"
     android:minHeight="600dp"
-    android:gravity="center">
+    android:gravity="center"
+    android:textColor="#fffbee">
 </TextView>

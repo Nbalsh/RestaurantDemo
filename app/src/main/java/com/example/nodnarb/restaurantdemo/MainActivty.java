@@ -1,5 +1,6 @@
 package com.example.nodnarb.restaurantdemo;
 
+import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -8,6 +9,9 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Color;
+import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.ContextMenu;
 import android.view.MotionEvent;
@@ -35,7 +39,7 @@ public class MainActivty extends Activity {
       super.onCreate(savedInstanceState);
       setContentView(R.layout.activity_main_activty);
       InsertData();
-
+      mainListView.setBackgroundColor(Color.parseColor("#ff615f"));
     // Set the ArrayAdapter as the ListView's adapter.
       mainListView.setAdapter(listAdapter);
 
@@ -175,17 +179,23 @@ public class MainActivty extends Activity {
 
                 // We know the View is a TextView so we can cast it
                 final TextView clickedView = (TextView) view;
+
+                final Drawable background = clickedView.getBackground();
+                clickedView.setBackgroundColor(Color.parseColor("#aa66cc"));
+
                 registerForContextMenu(mainListView);
 //                Toast.makeText(MainActivty.this, "Item with id [" + id + "] - Position [" + position + "] - Restaurant [" + clickedView.getText() + "]", Toast.LENGTH_SHORT).show();
                 new AlertDialog.Builder(MainActivty.this)
                         .setTitle("Likey Like")
                         .setMessage("Add " + clickedView.getText() + " to your liked restaurants?")
                         .setPositiveButton("Like", new DialogInterface.OnClickListener() {
+                            @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
                             public void onClick(DialogInterface dialog, int which) {
                                 ContentValues value = PutValues(which, clickedView.getText().toString(), "aLocation");
                                 db.insert(RestaurantReaderContract.RestaurantEntry.TABLE_NAME_SELECTED, null, value);
                                 RemoveRestaurntWithId(which);
                                 listAdapter.notifyDataSetChanged();
+                                clickedView.setBackground(background);
                             }
 
                             private void RemoveRestaurntWithId(int which) {
@@ -195,9 +205,11 @@ public class MainActivty extends Activity {
                             }
                         })
                         .setNegativeButton("Pass", new DialogInterface.OnClickListener() {
+                            @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
                             public void onClick(DialogInterface dialog, int which) {
                                 RemoveRestaurntWithId(which);
                                 listAdapter.notifyDataSetChanged();
+                                clickedView.setBackground(background);
                             }
 
                             private void RemoveRestaurntWithId(int which) {

@@ -164,7 +164,9 @@ public class MainActivty extends Activity {
                         .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
                                 db.delete(RestaurantReaderContract.RestaurantEntry.TABLE_NAME, RestaurantReaderContract.RestaurantEntry._ID + "=" + which, null);
-                                Toast.makeText(MainActivty.this, "id:" + "[" + position + "]", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(MainActivty.this, "Liked!", Toast.LENGTH_SHORT).show();
+                                listAdapter.remove(listAdapter.getItem(position));
+                                listAdapter.notifyDataSetChanged();
                             }
                         })
                         .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {

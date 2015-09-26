@@ -172,7 +172,7 @@ public class MainActivty extends Activity {
                 new AlertDialog.Builder(MainActivty.this)
                         .setTitle("Likey Like")
                         .setMessage("Add " + clickedView.getText() + " to your liked restaurants?")
-                        .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                        .setPositiveButton("Like", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
                                 ContentValues value = PutValues(which, clickedView.getText().toString(), "aLocation");
                                 db.insert(RestaurantReaderContract.RestaurantEntry.TABLE_NAME_SELECTED, null, value);
@@ -186,9 +186,16 @@ public class MainActivty extends Activity {
                                 listAdapter.remove(listAdapter.getItem(position));
                             }
                         })
-                        .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+                        .setNegativeButton("Pass", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
-                                // do nothing
+                                RemoveRestaurntWithId(which);
+                                listAdapter.notifyDataSetChanged();
+                            }
+
+                            private void RemoveRestaurntWithId(int which) {
+                                db.delete(RestaurantReaderContract.RestaurantEntry.TABLE_NAME, RestaurantReaderContract.RestaurantEntry._ID + "=" + which, null);
+                                Toast.makeText(MainActivty.this, "Passed :(", Toast.LENGTH_SHORT).show();
+                                listAdapter.remove(listAdapter.getItem(position));
                             }
                         })
                         .setIcon(android.R.drawable.ic_dialog_alert)

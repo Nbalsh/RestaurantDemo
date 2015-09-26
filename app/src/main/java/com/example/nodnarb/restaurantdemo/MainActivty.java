@@ -31,7 +31,7 @@ public class MainActivty extends Activity {
 
     // Set the ArrayAdapter as the ListView's adapter.
       mainListView.setAdapter(listAdapter);
-
+ 
     // React to user clicks on item
       SetOnClickListener();
   }

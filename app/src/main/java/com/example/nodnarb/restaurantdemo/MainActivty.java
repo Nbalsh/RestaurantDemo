@@ -186,24 +186,8 @@ public class MainActivty extends Activity {
                 registerForContextMenu(mainListView);
 //                Toast.makeText(MainActivty.this, "Item with id [" + id + "] - Position [" + position + "] - Restaurant [" + clickedView.getText() + "]", Toast.LENGTH_SHORT).show();
                 new AlertDialog.Builder(MainActivty.this)
-                        .setTitle("Likey Like")
-                        .setMessage("Add " + clickedView.getText() + " to your liked restaurants?")
-                        .setPositiveButton("Like", new DialogInterface.OnClickListener() {
-                            @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
-                            public void onClick(DialogInterface dialog, int which) {
-                                ContentValues value = PutValues(which, clickedView.getText().toString(), "aLocation");
-                                db.insert(RestaurantReaderContract.RestaurantEntry.TABLE_NAME_SELECTED, null, value);
-                                RemoveRestaurntWithId(which);
-                                listAdapter.notifyDataSetChanged();
-                                clickedView.setBackground(background);
-                            }
-
-                            private void RemoveRestaurntWithId(int which) {
-                                db.delete(RestaurantReaderContract.RestaurantEntry.TABLE_NAME, RestaurantReaderContract.RestaurantEntry._ID + "=" + which, null);
-                                Toast.makeText(MainActivty.this, "Liked!", Toast.LENGTH_SHORT).show();
-                                listAdapter.remove(listAdapter.getItem(position));
-                            }
-                        })
+                        .setTitle("Pass On Restaurant?")
+                        .setMessage("Pass on " + clickedView.getText() + "?")
                         .setNegativeButton("Pass", new DialogInterface.OnClickListener() {
                             @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
                             public void onClick(DialogInterface dialog, int which) {

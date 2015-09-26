@@ -120,14 +120,6 @@ public class FinalSelectionActivity extends AppCompatActivity {
         return restaurantNames;
     }
 
-    private ContentValues PutValues(int id, String title, String location, ContentValues values)
-    {
-        values.put(RestaurantReaderContract.RestaurantEntry.COLUMN_NAME_ENTRY_ID, id);
-        values.put(RestaurantReaderContract.RestaurantEntry.COLUMN_NAME_TITLE, title);
-        values.put(RestaurantReaderContract.RestaurantEntry.COLUMN_NAME_LOCATION, location);
-        return values;
-    }
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.

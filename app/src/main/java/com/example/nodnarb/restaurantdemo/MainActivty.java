@@ -167,7 +167,7 @@ public class MainActivty extends Activity {
 
     public void likeButton(View view){
         if(listAdapter.getCount() > 0) {
-
+            Toast.makeText(MainActivty.this, "Liked!", Toast.LENGTH_SHORT).show();
             TextView item = (TextView) mainListView.getChildAt(mainListView.getFirstVisiblePosition());
 
             SQLiteDatabase db = mDbHelper.getWritableDatabase();
@@ -184,5 +184,21 @@ public class MainActivty extends Activity {
         SQLiteDatabase db = mDbHelper.getWritableDatabase();
         db.delete(RestaurantReaderContract.RestaurantEntry.TABLE_NAME, RestaurantReaderContract.RestaurantEntry._ID + "=" + which, null);
         listAdapter.remove(listAdapter.getItem(0));
+    }
+
+
+
+    public void passButton(View view){
+        if(listAdapter.getCount() > 0) {
+            Toast.makeText(MainActivty.this, "Passed!", Toast.LENGTH_SHORT).show();
+            TextView item = (TextView) mainListView.getChildAt(mainListView.getFirstVisiblePosition());
+
+            SQLiteDatabase db = mDbHelper.getWritableDatabase();
+
+            ContentValues value = PutValues(mainListView.getFirstVisiblePosition(), item.getText().toString(), "aLocation");
+            RemoveRestaurntWithId(0);
+            listAdapter.notifyDataSetChanged();
+            //clickedView.setBackground(background);
+        }
     }
 }

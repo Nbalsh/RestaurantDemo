@@ -6,4 +6,5 @@
     <string name="title_activity_final_selection">FinalSelectionActivity</string>
     <string name="done_button">View liked Restaurants!</string>
     <string name="like_button">Like Restaurant!</string>
+    <string name="pass_button">Pass Restaurant!</string>
 </resources>

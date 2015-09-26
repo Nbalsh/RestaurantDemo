@@ -16,7 +16,6 @@
             android:layout_height="wrap_content"
             android:layout_width="wrap_content"
             android:text="@string/done_button"
-            android:layout_alignParentBottom="true"
             android:textAllCaps="false"
             android:onClick="startFinalSelectionActivity"
             />
@@ -30,5 +29,15 @@
         android:textAllCaps="false"
         android:onClick="likeButton"
         android:layout_alignParentRight="true"
+        />
+    <Button
+        android:id="@+id/pass_button"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:text="@string/pass_button"
+        android:layout_alignParentBottom="true"
+        android:textAllCaps="false"
+        android:onClick="passButton"
+
         />
 </RelativeLayout>
